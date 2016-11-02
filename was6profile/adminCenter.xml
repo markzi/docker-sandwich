@@ -1,0 +1,10 @@
+<server>
+	<featuremanager>
+		<feature>adminCenter-1.0</feature>
+	</featuremanager>
+	<quickstartsecurity userName="wsadmin" userPassword="wsadmin">
+	</quickstartsecurity>
+	<remotefileaccess>
+		<writedir>${server.config.dir}</writedir>
+	</remotefileaccess>
+</server>
