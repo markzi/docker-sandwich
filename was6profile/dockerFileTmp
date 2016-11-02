@@ -1,5 +1,0 @@
-FROM websphere-liberty:webProfile6
-RUN apt-get update
-RUN server create myServer
-COPY server.xml
-RUN installUtility install --acceptLicense defaultServer
