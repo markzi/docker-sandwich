@@ -1,31 +1,51 @@
 <server description="myServer">
 
    <!-- Enable features -->
-   <featureManager>
-      <feature>adminCenter-1.0</feature>
-   </featureManager>
+  <featureManager>
+    <feature>adminCenter-1.0</feature>
+	  <feature>jdbc-4.1</feature>
+	  <feature>localConnector-1.0</feature>
+    <feature>jaxrs-2.0</feature>
+	  <feature>ssl-1.0</feature>
+  </featureManager>
 
-   <!-- Define the host name for use by the collective.
-        If the host name needs to be changed, the server should be
-        removed from the collective and re-joined. -->
-   <variable name="defaultHostName" value="localhost" />
+  <library id="db2v10Libs">
+    <fileset dir="${shared.resource.dir}/db2/v10" includes="db2jcc4.jar" scanInterval="5s"/>
+  </library>
 
-    <!-- Define an Administrator and non-Administrator -->
-   <basicRegistry id="basic">
-      <user name="admin" password="adminpwd" />
-      <user name="nonadmin" password="nonadminpwd" />
-   </basicRegistry>
+  <jdbcDriver id="DB2v10" libraryRef="db2v10Libs"/>
+	<dataSource id="MY_WS" jndiName="jdbc/DS" jdbcDriverRef="DB2v10">
+		<connectionManager maxPoolSize="10" minPoolSize="2"/>
+		<properties.db2.jcc
+      databaseName="DENV"
+		  serverName="dev-dbs01.local"
+		  portNumber="60023"
+      currentLockTimeout="30s"
+		  user="denv"
+		  password="denv"/>
+	</dataSource>
 
-   <!-- Assign 'admin' to Administrator -->
-   <administrator-role>
-      <user>admin</user>
-   </administrator-role>
+  <!-- Define the host name for use by the collective.
+   If the host name needs to be changed, the server should be
+   removed from the collective and re-joined. -->
+  <variable name="defaultHostName" value="localhost" />
 
-   <keyStore id="defaultKeyStore" password="Liberty" />
+  <!-- Define an Administrator and non-Administrator -->
+  <basicRegistry id="basic">
+    <user name="admin" password="adminpwd" />
+    <user name="nonadmin" password="nonadminpwd" />
+  </basicRegistry>
 
-   <httpEndpoint id="defaultHttpEndpoint"
-                 host="*"
-                 httpPort="9080"
-                 httpsPort="9443" />
+  <!-- Assign 'admin' to Administrator -->
+  <administrator-role>
+    <user>admin</user>
+  </administrator-role>
+
+  <keyStore id="defaultKeyStore" password="Liberty" />
+
+  <httpEndpoint id="defaultHttpEndpoint"
+    host="*"
+    httpPort="9080"
+    httpsPort="9443" />
 
 </server>
